@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showLoading = false
+    @State private var status = "Downloading..."
     @State private var data = 0.0
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
@@ -18,10 +19,12 @@ struct ContentView: View {
             if showLoading {
                 ProgressView("Loading")
             } else {
-                ProgressView("Downloading...", value: data, total: 500)
+                ProgressView("\(status)", value: data, total: 100)
                     .onReceive(timer) { _ in
-                        if data < 256 {
+                        if data < 100 {
                             data += Double.random(in: 0...4)
+                        } else {
+                            status = "Done!"
                         }
                         
                     }
